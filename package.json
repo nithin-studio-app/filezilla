@@ -1,0 +1,45 @@
+{
+  "name": "@nithin22796/file-manager",
+  "version": "0.0.1",
+  "private": false,
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "type": "module",
+  "description": "file-manager UI, published for consumption by my-apps-setup.",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/file-manager.js",
+  "module": "./dist/file-manager.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/file-manager.js"
+    },
+    "./*.css": "./dist/*.css"
+  },
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.3",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "typescript": "~6.0.2",
+    "vite": "^8.1.1",
+    "vite-plugin-dts": "^5.0.3",
+    "vite-plugin-lib-inject-css": "^2.2.1"
+  },
+  "scripts": {
+    "build": "tsc --noEmit && vite build",
+    "lint": "tsc --noEmit"
+  }
+}
