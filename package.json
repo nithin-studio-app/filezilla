@@ -1,22 +1,22 @@
 {
-  "name": "@nithin22796/file-manager",
+  "name": "@nithin-studio-app/filezilla",
   "version": "0.0.1",
   "private": false,
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },
   "type": "module",
-  "description": "file-manager UI, published for consumption by my-apps-setup.",
+  "description": "filezilla UI, published for consumption by nithin-studio.",
   "files": [
     "dist"
   ],
-  "main": "./dist/file-manager.js",
-  "module": "./dist/file-manager.js",
+  "main": "./dist/filezilla.js",
+  "module": "./dist/filezilla.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/file-manager.js"
+      "import": "./dist/filezilla.js"
     },
     "./*.css": "./dist/*.css"
   },
@@ -24,15 +24,19 @@
     "**/*.css"
   ],
   "peerDependencies": {
+    "@nithin-studio-app/ui-components": "^0.2.4",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-router-dom": "^7.0.0"
   },
   "devDependencies": {
+    "@nithin-studio-app/ui-components": "^0.2.4",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.3",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
+    "react-router-dom": "^7.18.1",
     "typescript": "~6.0.2",
     "vite": "^8.1.1",
     "vite-plugin-dts": "^5.0.3",

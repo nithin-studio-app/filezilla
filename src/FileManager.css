@@ -1,0 +1,495 @@
+.file-manager {
+  display: flex;
+  align-items: stretch;
+  gap: 2rem;
+  height: 100%;
+  min-height: 0;
+}
+
+.file-manager-sidebar,
+.file-manager-main {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.file-manager-sidebar {
+  flex: 0 0 15rem;
+}
+
+.file-manager-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.file-manager-panel-header {
+  flex: 0 0 auto;
+  padding: 0.75rem 0;
+}
+
+.file-manager-service-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.file-manager-main-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.file-manager-header-spacer {
+  flex: 1 1 auto;
+}
+
+.file-manager-header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.file-manager-main-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.file-manager-search {
+  flex: 0 0 auto;
+  width: 14rem;
+  overflow: hidden;
+  transition: width 0.2s ease;
+}
+
+.file-manager-search input {
+  font-size: 1.05rem;
+}
+
+.file-manager-search-collapsed {
+  width: 2.1rem;
+}
+
+.file-manager-search-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  background: none;
+  border: 1px solid #2a2c30;
+  border-radius: 8px;
+  color: #9aa0a6;
+  cursor: pointer;
+}
+
+.file-manager-search-toggle:hover {
+  color: #e8eaed;
+  background: #202226;
+}
+
+.file-manager-search-toggle svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.file-manager-search-collapse {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  padding: 0.2rem;
+  color: #9aa0a6;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.file-manager-search-collapse:hover {
+  color: #e8eaed;
+  background: #202226;
+}
+
+.file-manager-search-collapse svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.file-manager-back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  padding: 0.2rem;
+  margin: -0.2rem;
+  color: #9aa0a6;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.file-manager-back:hover {
+  color: #e8eaed;
+  background: #202226;
+}
+
+.file-manager-back svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.file-manager-panel-body {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 1rem;
+  border: 1px solid #2a2c30;
+  border-radius: 12px;
+}
+
+.file-manager-drop-active {
+  border-color: #2962ff;
+  border-style: dashed;
+  background: rgba(41, 98, 255, 0.06);
+}
+
+.file-manager-drop-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  pointer-events: none;
+  color: #2962ff;
+  background: rgba(10, 11, 13, 0.75);
+  border-radius: 11px;
+}
+
+.file-manager-drop-overlay svg {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.file-manager-upload-progress {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid #2a2c30;
+  border-radius: 8px;
+  background: #17181b;
+}
+
+.file-manager-nav-body {
+  padding: 0.5rem;
+}
+
+.file-manager-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.file-manager-name svg {
+  width: 1.2rem;
+  height: 1.2rem;
+  flex-shrink: 0;
+  color: #9aa0a6;
+}
+
+.file-manager-thumb {
+  width: 1.2rem;
+  height: 1.2rem;
+  flex-shrink: 0;
+  object-fit: cover;
+  border-radius: 3px;
+}
+
+.file-manager-breadcrumbs {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.file-manager-breadcrumbs ol {
+  flex-wrap: nowrap;
+  overflow: hidden;
+}
+
+.file-manager-breadcrumbs button {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  color: #9aa0a6;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.file-manager-breadcrumb-home {
+  display: inline-flex;
+  align-items: center;
+}
+
+.file-manager-breadcrumb-home svg {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+.file-manager-breadcrumbs button:hover {
+  color: #e8eaed;
+}
+
+.file-manager-breadcrumbs li:last-child button {
+  color: #e8eaed;
+}
+
+.file-manager-view-toggle {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid #2a2c30;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.file-manager-view-toggle button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  background: none;
+  border: none;
+  color: #9aa0a6;
+  cursor: pointer;
+}
+
+.file-manager-view-toggle button + button {
+  border-left: 1px solid #2a2c30;
+}
+
+.file-manager-view-toggle button:hover {
+  color: #e8eaed;
+  background: #202226;
+}
+
+.file-manager-view-toggle button.active {
+  color: #fff;
+  background: rgba(41, 98, 255, 0.2);
+}
+
+.file-manager-view-toggle svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.file-manager-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+  gap: 1.5rem;
+}
+
+.file-manager-grid-item {
+  position: relative;
+  border-radius: 8px;
+}
+
+.file-manager-grid-item:hover {
+  background: #202226;
+}
+
+.file-manager-grid-item-selected {
+  background: rgba(41, 98, 255, 0.15);
+}
+
+.file-manager-grid-item-selected:hover {
+  background: rgba(41, 98, 255, 0.22);
+}
+
+.file-manager-grid-item-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 1.5rem 0.75rem 1rem;
+  background: none;
+  border: none;
+  border-radius: 8px;
+  color: inherit;
+  font: inherit;
+  text-align: center;
+  cursor: pointer;
+}
+
+.file-manager-grid-item-button svg {
+  width: 3.25rem;
+  height: 3.25rem;
+  color: #9aa0a6;
+}
+
+.file-manager-grid-checkbox {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 1;
+}
+
+.file-manager-thumb-grid {
+  width: 4.5rem;
+  height: 4.5rem;
+}
+
+.file-manager-grid-item-name {
+  font-size: 0.85rem;
+  color: #e8eaed;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-manager-grid-item-size {
+  font-size: 0.75rem;
+  color: #9aa0a6;
+}
+
+.file-manager-loading-state {
+  padding-top: 2rem;
+  max-width: 24rem;
+  margin: 0 auto;
+}
+
+.file-manager-error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+  max-width: 28rem;
+  margin: 2rem auto 0;
+}
+
+.file-manager-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  height: 100%;
+  max-width: 24rem;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.file-manager-empty-state svg {
+  width: 3.5rem;
+  height: 3.5rem;
+  color: #4a4d52;
+  margin-bottom: 0.5rem;
+}
+
+.file-manager-loading-more {
+  padding: 0.75rem 0.25rem 0;
+  max-width: 16rem;
+  margin: 0 auto;
+}
+
+.file-manager-selection-bar {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.file-manager-selection-clear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  padding: 0.2rem;
+  margin: -0.2rem;
+  color: #9aa0a6;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.file-manager-selection-clear:hover {
+  color: #e8eaed;
+  background: #202226;
+}
+
+.file-manager-selection-clear svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.file-manager-selection-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.file-manager-context-menu {
+  position: fixed;
+  z-index: 20;
+  min-width: 12rem;
+  margin: 0;
+  padding: 0.35rem;
+  list-style: none;
+  background: #1a1b1e;
+  border: 1px solid #2a2c30;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.file-manager-context-menu button {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.5rem 0.6rem;
+  background: none;
+  border: none;
+  border-radius: 6px;
+  color: #e8eaed;
+  font-size: 0.85rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+.file-manager-context-menu button:hover {
+  background: #26282c;
+}
+
+.file-manager-context-menu button svg {
+  width: 1.1rem;
+  height: 1.1rem;
+  color: #9aa0a6;
+}
+
+.file-manager-context-menu-danger {
+  color: #ff6b6b !important;
+}
+
+.file-manager-context-menu-danger svg {
+  color: #ff6b6b !important;
+}

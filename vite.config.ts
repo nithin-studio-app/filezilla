@@ -10,10 +10,10 @@ export default defineConfig({
     lib: {
       entry: resolve(__dirname, "src/index.ts"),
       formats: ["es"],
-      fileName: "file-manager",
+      fileName: "filezilla",
     },
     rollupOptions: {
-      external: ["react", "react-dom", "react/jsx-runtime"],
+      external: ["react", "react-dom", "react/jsx-runtime", "react-router-dom", "@nithin-studio-app/ui-components"],
     },
   },
 });

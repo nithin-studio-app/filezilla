@@ -1,0 +1,98 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      bump:
+        description: "Version bump type"
+        required: true
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+
+concurrency:
+  group: release-main
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+  packages: write
+
+jobs:
+  release:
+    name: Bump, publish, then sync main
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.CHANGESETS_PAT }}
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+          registry-url: https://npm.pkg.github.com
+          scope: "@nithin-studio-app"
+
+      - run: pnpm install --frozen-lockfile
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.CHANGESETS_PAT }}
+
+      # actions/checkout already gets main's latest by default, but make it
+      # explicit — this must run before any local changes so there's
+      # nothing to lose from resetting.
+      - name: Sync with latest main
+        run: |
+          git fetch origin main
+          git checkout main
+          git reset --hard origin/main
+
+      # Not tied to any single PR — bumps whatever's currently on main,
+      # however many merges have accumulated since the last release.
+      - name: Bump version
+        run: pnpm version ${{ inputs.bump }} --no-git-tag-version
+
+      - run: pnpm build
+
+      # Publish first, using the version just bumped to above — before
+      # main's package.json reflects it.
+      - name: Publish to GitHub Packages
+        run: pnpm publish --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.CHANGESETS_PAT }}
+
+      # Only after a successful publish: open a PR to bring main's
+      # package.json in line with what was just published.
+      - name: Open version-sync PR
+        env:
+          GH_TOKEN: ${{ secrets.CHANGESETS_PAT }}
+        run: |
+          set -e
+          VERSION=$(node -p "require('./package.json').version")
+          BRANCH="version-bump"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Clear out any leftover branch from a previous failed/interrupted
+          # run so this push is a clean create, not a force-overwrite.
+          git push origin --delete "$BRANCH" 2>/dev/null || true
+
+          git checkout -b "$BRANCH"
+          git add package.json
+          git commit -m "chore: sync version to v$VERSION"
+          git push origin "$BRANCH"
+
+          PR_URL=$(gh pr create \
+            --base main \
+            --head "$BRANCH" \
+            --title "chore: sync version to v$VERSION" \
+            --body "v$VERSION was just published to GitHub Packages. This PR syncs \`package.json\` on \`main\` to match.")
+          PR_NUMBER="${PR_URL##*/}"
+          gh pr merge --auto --squash --delete-branch "$PR_NUMBER"
