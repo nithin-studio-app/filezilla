@@ -214,6 +214,17 @@
   color: #9aa0a6;
 }
 
+.file-manager-table-star {
+  display: inline-flex;
+  flex-shrink: 0;
+  color: #ffca28;
+}
+
+.file-manager-table-star svg {
+  width: 1rem;
+  height: 1rem;
+}
+
 .file-manager-thumb {
   width: 1.2rem;
   height: 1.2rem;
@@ -321,6 +332,20 @@
 
 .file-manager-grid-item-selected:hover {
   background: rgba(41, 98, 255, 0.22);
+}
+
+.file-manager-grid-star {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 1;
+  display: inline-flex;
+  color: #ffca28;
+}
+
+.file-manager-grid-star svg {
+  width: 1rem;
+  height: 1rem;
 }
 
 .file-manager-grid-item-button {

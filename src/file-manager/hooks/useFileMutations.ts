@@ -130,6 +130,44 @@ export function useFileMutations({
       .catch((err: unknown) => showToast(err instanceof Error ? err.message : "Restore failed", "error"));
   }
 
+  function handleStarSelected() {
+    const targets = selectedItems;
+    closeContextMenu();
+    Promise.all(
+      targets.map((item) =>
+        fetch(`${mutationUrl(apiBaseUrl, item)}/star`, { method: "POST" }).then((response) => {
+          if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
+          return response.json();
+        }),
+      ),
+    )
+      .then(() => {
+        showToast(`Starred ${targets.length} item${targets.length === 1 ? "" : "s"}.`);
+        clearSelection();
+        refreshItems();
+      })
+      .catch((err: unknown) => showToast(err instanceof Error ? err.message : "Failed to star", "error"));
+  }
+
+  function handleUnstarSelected() {
+    const targets = selectedItems;
+    closeContextMenu();
+    Promise.all(
+      targets.map((item) =>
+        fetch(`${mutationUrl(apiBaseUrl, item)}/unstar`, { method: "POST" }).then((response) => {
+          if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
+          return response.json();
+        }),
+      ),
+    )
+      .then(() => {
+        showToast(`Removed ${targets.length} item${targets.length === 1 ? "" : "s"} from starred.`);
+        clearSelection();
+        refreshItems();
+      })
+      .catch((err: unknown) => showToast(err instanceof Error ? err.message : "Failed to unstar", "error"));
+  }
+
   function openDeleteForeverConfirm() {
     closeContextMenu();
     setConfirmDeleteOpen(true);
@@ -173,6 +211,8 @@ export function useFileMutations({
     submitRename,
     handleTrashSelected,
     handleRestoreSelected,
+    handleStarSelected,
+    handleUnstarSelected,
     confirmDeleteOpen,
     openDeleteForeverConfirm,
     closeDeleteForeverConfirm,

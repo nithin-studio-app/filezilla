@@ -1,5 +1,5 @@
 import type { MouseEvent as ReactMouseEvent } from "react";
-import { FileIcon, FolderIcon } from "@nithin-studio-app/ui-components";
+import { FileIcon, FolderIcon, StarIcon } from "@nithin-studio-app/ui-components";
 import { formatSize, hasReadyPreview, itemKey } from "./utils";
 import type { Item } from "./types";
 
@@ -23,6 +23,11 @@ export function FileGrid({ items, selectedKeys, objectUrl, onItemClick, onItemDo
           key={itemKey(item)}
           onContextMenu={(event) => onContextMenu(event, item, index)}
         >
+          {item.starred_at && (
+            <span className="file-manager-grid-star" aria-label="Starred">
+              <StarIcon />
+            </span>
+          )}
           <button
             type="button"
             className="file-manager-grid-item-button"

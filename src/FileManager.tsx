@@ -1,6 +1,18 @@
 import { useRef, useState } from "react";
 import type { MouseEvent as ReactMouseEvent, UIEvent } from "react";
-import { Alert, Button, CalendarIcon, FolderIcon, MediaPreview, ProgressBar, Snackbar, Text, TrashIcon, UploadIcon } from "@nithin-studio-app/ui-components";
+import {
+  Alert,
+  Button,
+  CalendarIcon,
+  FolderIcon,
+  MediaPreview,
+  ProgressBar,
+  Snackbar,
+  StarIcon,
+  Text,
+  TrashIcon,
+  UploadIcon,
+} from "@nithin-studio-app/ui-components";
 import { ContextMenu } from "./file-manager/ContextMenu";
 import { FileGrid } from "./file-manager/FileGrid";
 import { FileManagerDialogs } from "./file-manager/FileManagerDialogs";
@@ -16,7 +28,7 @@ import { useSelection } from "./file-manager/hooks/useSelection";
 import { useToast } from "./file-manager/hooks/useToast";
 import { useUpload } from "./file-manager/hooks/useUpload";
 import { MainHeader } from "./file-manager/MainHeader";
-import { NAV_SECTIONS, Sidebar } from "./file-manager/Sidebar";
+import { Sidebar } from "./file-manager/Sidebar";
 import type { Item, NavSection, ViewMode } from "./file-manager/types";
 import { buildObjectUrl, isPreviewable, itemKey } from "./file-manager/utils";
 import "./FileManager.css";
@@ -74,10 +86,17 @@ export function FileManager({
     activeNav: navigation.activeNav,
     isTrash: navigation.isTrash,
     isRecent: navigation.isRecent,
+    isStarred: navigation.isStarred,
     showToast,
   });
 
-  const filteredItems = navigation.isTrash ? itemsData.trashItems : navigation.isRecent ? itemsData.recentItems : itemsData.items;
+  const filteredItems = navigation.isTrash
+    ? itemsData.trashItems
+    : navigation.isRecent
+      ? itemsData.recentItems
+      : navigation.isStarred
+        ? itemsData.starredItems
+        : itemsData.items;
 
   const selection = useSelection(filteredItems);
 
@@ -169,7 +188,7 @@ export function FileManager({
       showToast("Restore this folder to open it.");
       return;
     }
-    if (navigation.isRecent && item.kind === "folder") {
+    if ((navigation.isRecent || navigation.isStarred) && item.kind === "folder") {
       navigation.openFolderFlat(item);
       return;
     }
@@ -187,8 +206,12 @@ export function FileManager({
     if (scrollHeight - scrollTop - clientHeight < 200) itemsData.loadMore();
   }
 
+  const allSelectedStarred =
+    selection.selectedItems.length > 0 && selection.selectedItems.every((item) => Boolean(item.starred_at));
+
   const objectUrl = (key: string) => buildObjectUrl(apiBaseUrl, key);
-  const showHeaderLeft = navigation.activeNav === "home" || navigation.isTrash || navigation.isRecent;
+  const showHeaderLeft =
+    navigation.activeNav === "home" || navigation.isTrash || navigation.isRecent || navigation.isStarred;
 
   return (
     <div className="file-manager">
@@ -204,6 +227,7 @@ export function FileManager({
           showHeaderLeft={showHeaderLeft}
           isTrash={navigation.isTrash}
           isRecent={navigation.isRecent}
+          isStarred={navigation.isStarred}
           selectedCount={selection.selectedKeys.size}
           totalCount={filteredItems.length}
           onToggleSelectAll={selection.toggleSelectAll}
@@ -212,6 +236,8 @@ export function FileManager({
           onDeleteForeverConfirm={mutations.openDeleteForeverConfirm}
           onDownloadSelected={mutations.handleDownloadSelected}
           onTrashSelected={mutations.handleTrashSelected}
+          onStarSelected={mutations.handleStarSelected}
+          onUnstarSelected={mutations.handleUnstarSelected}
           path={navigation.path}
           onGoToRoot={goToRoot}
           onGoToPathIndex={goToPathIndex}
@@ -254,11 +280,7 @@ export function FileManager({
               />
             </div>
           )}
-          {navigation.activeNav !== "home" && !navigation.isTrash && !navigation.isRecent ? (
-            <Text variant="body2" color="#9aa0a6">
-              {NAV_SECTIONS.find((section) => section.key === navigation.activeNav)?.label} — coming soon.
-            </Text>
-          ) : itemsData.loading ? (
+          {itemsData.loading ? (
             <div className="file-manager-loading-state">
               <ProgressBar variant="indeterminate" aria-label="Loading files" />
             </div>
@@ -271,7 +293,9 @@ export function FileManager({
                     ? "Couldn't load trash"
                     : navigation.isRecent
                       ? "Couldn't load recently added items"
-                      : "Couldn't load this folder"
+                      : navigation.isStarred
+                        ? "Couldn't load starred items"
+                        : "Couldn't load this folder"
                 }
               >
                 {itemsData.error}
@@ -282,16 +306,32 @@ export function FileManager({
             </div>
           ) : filteredItems.length === 0 ? (
             <div className="file-manager-empty-state">
-              {navigation.isTrash ? <TrashIcon /> : navigation.isRecent ? <CalendarIcon /> : <FolderIcon />}
+              {navigation.isTrash ? (
+                <TrashIcon />
+              ) : navigation.isRecent ? (
+                <CalendarIcon />
+              ) : navigation.isStarred ? (
+                <StarIcon />
+              ) : (
+                <FolderIcon />
+              )}
               <Text variant="h6">
-                {navigation.isTrash ? "Trash is empty" : navigation.isRecent ? "Nothing added recently" : "This folder is empty"}
+                {navigation.isTrash
+                  ? "Trash is empty"
+                  : navigation.isRecent
+                    ? "Nothing added recently"
+                    : navigation.isStarred
+                      ? "No starred items"
+                      : "This folder is empty"}
               </Text>
               <Text variant="body2" color="#9aa0a6">
                 {navigation.isTrash
                   ? "Items you delete are moved here until you delete them forever."
                   : navigation.isRecent
                     ? "Files and folders you add will show up here."
-                    : "Upload a file or create a folder to get started."}
+                    : navigation.isStarred
+                      ? "Star files and folders to find them quickly here."
+                      : "Upload a file or create a folder to get started."}
               </Text>
             </div>
           ) : viewMode === "table" ? (
@@ -345,11 +385,13 @@ export function FileManager({
           isTrash={navigation.isTrash}
           canRename={!navigation.isTrash && selection.selectedItems.length === 1}
           canDownload={selection.selectedItems.some((item) => item.kind === "file")}
+          allStarred={allSelectedStarred}
           onRename={mutations.openRenameDialog}
           onDownload={mutations.handleDownloadSelected}
           onRestore={mutations.handleRestoreSelected}
           onDeleteForeverConfirm={mutations.openDeleteForeverConfirm}
           onTrash={mutations.handleTrashSelected}
+          onToggleStar={allSelectedStarred ? mutations.handleUnstarSelected : mutations.handleStarSelected}
         />
       )}
 

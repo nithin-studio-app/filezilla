@@ -7,15 +7,26 @@ interface UseItemsDataOptions {
   activeNav: string;
   isTrash: boolean;
   isRecent: boolean;
+  isStarred: boolean;
   showToast: (text: string, severity?: "info" | "error") => void;
 }
 
 // Owns fetching + pagination for whichever listing is currently on screen
-// (Home's current folder, Trash, or Recently Added) and nothing else.
-export function useItemsData({ apiBaseUrl, currentFolderId, activeNav, isTrash, isRecent, showToast }: UseItemsDataOptions) {
+// (Home's current folder, Trash, Recently Added, or Starred) and nothing
+// else.
+export function useItemsData({
+  apiBaseUrl,
+  currentFolderId,
+  activeNav,
+  isTrash,
+  isRecent,
+  isStarred,
+  showToast,
+}: UseItemsDataOptions) {
   const [items, setItems] = useState<Item[]>([]);
   const [trashItems, setTrashItems] = useState<Item[]>([]);
   const [recentItems, setRecentItems] = useState<Item[]>([]);
+  const [starredItems, setStarredItems] = useState<Item[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [hasMore, setHasMore] = useState(false);
@@ -110,6 +121,28 @@ export function useItemsData({ apiBaseUrl, currentFolderId, activeNav, isTrash, 
     // eslint-disable-next-line react-hooks/exhaustive-deps -- only refetch when Recently Added is opened/apiBaseUrl changes, not on every fetchRecentData identity change
   }, [isRecent, apiBaseUrl]);
 
+  function fetchStarredData() {
+    setLoading(true);
+    setError(null);
+    fetch(`${apiBaseUrl}/starred`)
+      .then((response) => {
+        if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
+        return response.json() as Promise<Item[]>;
+      })
+      .then(setStarredItems)
+      .catch((err: unknown) => {
+        const text = err instanceof Error ? err.message : "Failed to load starred items";
+        setError(text);
+        showToast(text, "error");
+      })
+      .finally(() => setLoading(false));
+  }
+
+  useEffect(() => {
+    if (isStarred) fetchStarredData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- only refetch when Starred is opened/apiBaseUrl changes, not on every fetchStarredData identity change
+  }, [isStarred, apiBaseUrl]);
+
   function refreshItems() {
     if (isTrash) {
       fetchTrashData();
@@ -117,6 +150,10 @@ export function useItemsData({ apiBaseUrl, currentFolderId, activeNav, isTrash, 
     }
     if (isRecent) {
       fetchRecentData();
+      return;
+    }
+    if (isStarred) {
+      fetchStarredData();
       return;
     }
     setLoading(true);
@@ -176,6 +213,7 @@ export function useItemsData({ apiBaseUrl, currentFolderId, activeNav, isTrash, 
     items,
     trashItems,
     recentItems,
+    starredItems,
     loading,
     loadingMore,
     hasMore,

@@ -13,6 +13,7 @@ export interface Item {
   preview_key?: string | null;
   preview_status?: PreviewStatus;
   trashed_at?: string | null;
+  starred_at?: string | null;
 }
 
 export interface PathEntry {

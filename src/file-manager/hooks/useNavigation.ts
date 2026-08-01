@@ -20,6 +20,7 @@ export function useNavigation({ apiBaseUrl, initialFolderId, onNavigate, showToa
   const currentFolderId = path.length > 0 ? path[path.length - 1].id : null;
   const isTrash = activeNav === "trash";
   const isRecent = activeNav === "recent";
+  const isStarred = activeNav === "starred";
 
   // Deep-link support: when the host passes a different initialFolderId
   // than what's currently shown, resolve its ancestor path and jump there.
@@ -69,9 +70,9 @@ export function useNavigation({ apiBaseUrl, initialFolderId, onNavigate, showToa
     onNavigate?.(item.id, null);
   }
 
-  // Recently Added is a flat cross-tree view, so there's no ancestor trail
-  // to restore — jump into it as if it were opened fresh from Home
-  // (breadcrumb just shows Home > this folder).
+  // Recently Added and Starred are both flat cross-tree views, so there's
+  // no ancestor trail to restore — jump into it as if it were opened fresh
+  // from Home (breadcrumb just shows Home > this folder).
   function openFolderFlat(item: { id: number; name: string }) {
     setActiveNav("home");
     setPath([{ id: item.id, name: item.name }]);
@@ -88,6 +89,7 @@ export function useNavigation({ apiBaseUrl, initialFolderId, onNavigate, showToa
     activeNav,
     isTrash,
     isRecent,
+    isStarred,
     path,
     currentFolderId,
     goToRoot,

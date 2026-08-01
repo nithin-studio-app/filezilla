@@ -10,6 +10,7 @@ import {
   HomeIcon,
   RefreshIcon,
   SearchIcon,
+  StarIcon,
   TableViewIcon,
   Text,
   TextField,
@@ -22,6 +23,7 @@ interface MainHeaderProps {
   showHeaderLeft: boolean;
   isTrash: boolean;
   isRecent: boolean;
+  isStarred: boolean;
   selectedCount: number;
   totalCount: number;
   onToggleSelectAll: () => void;
@@ -30,6 +32,8 @@ interface MainHeaderProps {
   onDeleteForeverConfirm: () => void;
   onDownloadSelected: () => void;
   onTrashSelected: () => void;
+  onStarSelected: () => void;
+  onUnstarSelected: () => void;
   path: PathEntry[];
   onGoToRoot: () => void;
   onGoToPathIndex: (index: number) => void;
@@ -50,6 +54,7 @@ export function MainHeader({
   showHeaderLeft,
   isTrash,
   isRecent,
+  isStarred,
   selectedCount,
   totalCount,
   onToggleSelectAll,
@@ -58,6 +63,8 @@ export function MainHeader({
   onDeleteForeverConfirm,
   onDownloadSelected,
   onTrashSelected,
+  onStarSelected,
+  onUnstarSelected,
   path,
   onGoToRoot,
   onGoToPathIndex,
@@ -111,6 +118,15 @@ export function MainHeader({
                     <Button variant="outlined" size="small" startIcon={<DownloadIcon />} onClick={onDownloadSelected}>
                       Download
                     </Button>
+                    {isStarred ? (
+                      <Button variant="outlined" size="small" startIcon={<StarIcon />} onClick={onUnstarSelected}>
+                        Remove from starred
+                      </Button>
+                    ) : (
+                      <Button variant="outlined" size="small" startIcon={<StarIcon />} onClick={onStarSelected}>
+                        Add to starred
+                      </Button>
+                    )}
                     <Button variant="outlined" size="small" startIcon={<TrashIcon />} onClick={onTrashSelected}>
                       Delete
                     </Button>
@@ -122,6 +138,8 @@ export function MainHeader({
             <Text variant="h6">Trash</Text>
           ) : isRecent ? (
             <Text variant="h6">Recently Added</Text>
+          ) : isStarred ? (
+            <Text variant="h6">Starred</Text>
           ) : (
             <div className="file-manager-breadcrumbs">
               <Breadcrumbs>

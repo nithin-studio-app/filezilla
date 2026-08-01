@@ -1,5 +1,5 @@
 import type { MouseEvent as ReactMouseEvent } from "react";
-import { FileIcon, FolderIcon, Table, TableBody, TableCell, TableHead, TableRow } from "@nithin-studio-app/ui-components";
+import { FileIcon, FolderIcon, StarIcon, Table, TableBody, TableCell, TableHead, TableRow } from "@nithin-studio-app/ui-components";
 import { formatSize, hasReadyPreview, itemKey } from "./utils";
 import type { Item } from "./types";
 
@@ -42,6 +42,11 @@ export function FileTable({ items, selectedKeys, objectUrl, onItemClick, onItemD
                   <FileIcon />
                 )}
                 <span>{item.name}</span>
+                {item.starred_at && (
+                  <span className="file-manager-table-star" aria-label="Starred">
+                    <StarIcon />
+                  </span>
+                )}
               </button>
             </TableCell>
             <TableCell align="right">{item.kind === "file" ? formatSize(item.size_bytes) : "—"}</TableCell>
