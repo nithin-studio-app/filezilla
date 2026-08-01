@@ -56,7 +56,7 @@ export interface FileManagerProps {
 export function FileManager({
   serviceName = "Filezilla",
   onBack,
-  apiBaseUrl = "http://localhost:8001",
+  apiBaseUrl = "http://localhost:8002",
   initialFolderId,
   initialFileId,
   onNavigate,
