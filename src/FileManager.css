@@ -345,13 +345,6 @@
   color: #9aa0a6;
 }
 
-.file-manager-grid-checkbox {
-  position: absolute;
-  top: 0.5rem;
-  left: 0.5rem;
-  z-index: 1;
-}
-
 .file-manager-thumb-grid {
   width: 4.5rem;
   height: 4.5rem;

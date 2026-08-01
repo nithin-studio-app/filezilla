@@ -1,5 +1,5 @@
 import type { MouseEvent as ReactMouseEvent } from "react";
-import { Checkbox, FileIcon, FolderIcon } from "@nithin-studio-app/ui-components";
+import { FileIcon, FolderIcon } from "@nithin-studio-app/ui-components";
 import { formatSize, hasReadyPreview, itemKey } from "./utils";
 import type { Item } from "./types";
 
@@ -7,12 +7,12 @@ interface FileGridProps {
   items: Item[];
   selectedKeys: Set<string>;
   objectUrl: (key: string) => string;
-  onToggleSelection: (item: Item, index: number) => void;
   onItemClick: (event: ReactMouseEvent, item: Item, index: number) => void;
+  onItemDoubleClick: (item: Item) => void;
   onContextMenu: (event: ReactMouseEvent, item: Item, index: number) => void;
 }
 
-export function FileGrid({ items, selectedKeys, objectUrl, onToggleSelection, onItemClick, onContextMenu }: FileGridProps) {
+export function FileGrid({ items, selectedKeys, objectUrl, onItemClick, onItemDoubleClick, onContextMenu }: FileGridProps) {
   return (
     <div className="file-manager-grid">
       {items.map((item, index) => (
@@ -23,17 +23,11 @@ export function FileGrid({ items, selectedKeys, objectUrl, onToggleSelection, on
           key={itemKey(item)}
           onContextMenu={(event) => onContextMenu(event, item, index)}
         >
-          <span className="file-manager-grid-checkbox">
-            <Checkbox
-              checked={selectedKeys.has(itemKey(item))}
-              onChange={() => onToggleSelection(item, index)}
-              aria-label={`Select ${item.name}`}
-            />
-          </span>
           <button
             type="button"
             className="file-manager-grid-item-button"
             onClick={(event) => onItemClick(event, item, index)}
+            onDoubleClick={() => onItemDoubleClick(item)}
           >
             {item.kind === "folder" ? (
               <FolderIcon />

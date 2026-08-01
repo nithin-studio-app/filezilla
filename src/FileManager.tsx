@@ -147,6 +147,9 @@ export function FileManager({
     showToast("No preview available for this file type.");
   }
 
+  // Google-Drive-style: a plain click only selects (no checkbox needed for
+  // that anymore); opening requires a double click. Shift/ctrl-click keep
+  // their existing range/multi-select meaning either way.
   function handleItemClick(event: ReactMouseEvent, item: Item, index: number) {
     if (event.shiftKey) {
       event.preventDefault();
@@ -158,7 +161,10 @@ export function FileManager({
       selection.toggleSelection(item, index);
       return;
     }
-    if (selection.selectedKeys.size > 0) selection.clearSelection();
+    selection.selectOnly(item, index);
+  }
+
+  function handleItemDoubleClick(item: Item) {
     if (navigation.isTrash && item.kind === "folder") {
       showToast("Restore this folder to open it.");
       return;
@@ -293,8 +299,8 @@ export function FileManager({
               items={filteredItems}
               selectedKeys={selection.selectedKeys}
               objectUrl={objectUrl}
-              onToggleSelection={selection.toggleSelection}
               onItemClick={handleItemClick}
+              onItemDoubleClick={handleItemDoubleClick}
               onContextMenu={handleContextMenu}
             />
           ) : (
@@ -302,8 +308,8 @@ export function FileManager({
               items={filteredItems}
               selectedKeys={selection.selectedKeys}
               objectUrl={objectUrl}
-              onToggleSelection={selection.toggleSelection}
               onItemClick={handleItemClick}
+              onItemDoubleClick={handleItemDoubleClick}
               onContextMenu={handleContextMenu}
             />
           )}
