@@ -1,5 +1,6 @@
 import type { MouseEvent as ReactMouseEvent } from "react";
 import { FileIcon, FolderIcon, StarIcon } from "@nithin-studio-app/ui-components";
+import { Thumbnail } from "./Thumbnail";
 import { formatSize, hasReadyPreview, itemKey } from "./utils";
 import type { Item } from "./types";
 
@@ -37,12 +38,7 @@ export function FileGrid({ items, selectedKeys, objectUrl, onItemClick, onItemDo
             {item.kind === "folder" ? (
               <FolderIcon />
             ) : hasReadyPreview(item) ? (
-              <img
-                className="file-manager-thumb file-manager-thumb-grid"
-                src={objectUrl(item.preview_key!)}
-                alt=""
-                loading="lazy"
-              />
+              <Thumbnail className="file-manager-thumb file-manager-thumb-grid" src={objectUrl(item.preview_key!)} />
             ) : (
               <FileIcon />
             )}

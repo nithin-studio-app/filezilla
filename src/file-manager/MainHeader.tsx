@@ -6,6 +6,7 @@ import {
   Checkbox,
   CloseIcon,
   DownloadIcon,
+  FolderIcon,
   GridViewIcon,
   HomeIcon,
   RefreshIcon,
@@ -34,6 +35,7 @@ interface MainHeaderProps {
   onTrashSelected: () => void;
   onStarSelected: () => void;
   onUnstarSelected: () => void;
+  onOpenMove: () => void;
   path: PathEntry[];
   onGoToRoot: () => void;
   onGoToPathIndex: (index: number) => void;
@@ -65,6 +67,7 @@ export function MainHeader({
   onTrashSelected,
   onStarSelected,
   onUnstarSelected,
+  onOpenMove,
   path,
   onGoToRoot,
   onGoToPathIndex,
@@ -127,6 +130,9 @@ export function MainHeader({
                         Add to starred
                       </Button>
                     )}
+                    <Button variant="outlined" size="small" startIcon={<FolderIcon />} onClick={onOpenMove}>
+                      Move to...
+                    </Button>
                     <Button variant="outlined" size="small" startIcon={<TrashIcon />} onClick={onTrashSelected}>
                       Delete
                     </Button>

@@ -4,6 +4,7 @@ import type { Item } from "../types";
 
 interface UseFileMutationsOptions {
   apiBaseUrl: string;
+  currentFolderId: number | null;
   selectedItems: Item[];
   showToast: (text: string, severity?: "info" | "error") => void;
   refreshItems: () => void;
@@ -11,12 +12,13 @@ interface UseFileMutationsOptions {
   closeContextMenu: () => void;
 }
 
-// Owns every write operation on files/folders: create, rename, trash,
+// Owns every write operation on files/folders: create, rename, move, trash,
 // restore, permanently delete, and download. Reads which items are
 // selected but doesn't own selection itself, and refreshes the listing
 // through the caller's refreshItems rather than touching it directly.
 export function useFileMutations({
   apiBaseUrl,
+  currentFolderId,
   selectedItems,
   showToast,
   refreshItems,
@@ -28,6 +30,7 @@ export function useFileMutations({
   const [renameTarget, setRenameTarget] = useState<Item | null>(null);
   const [renameValue, setRenameValue] = useState("");
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
+  const [moveDialogOpen, setMoveDialogOpen] = useState(false);
 
   function openNewFolderDialog() {
     setNewFolderOpen(true);
@@ -40,9 +43,22 @@ export function useFileMutations({
   function handleCreateFolder() {
     const name = newFolderName.trim();
     if (!name) return;
-    showToast(`"${name}" folder queued — wiring comes next.`);
-    setNewFolderName("");
-    setNewFolderOpen(false);
+    fetch(`${apiBaseUrl}/folders`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, parent_id: currentFolderId }),
+    })
+      .then((response) => {
+        if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
+        return response.json();
+      })
+      .then(() => {
+        showToast(`Created "${name}".`);
+        setNewFolderName("");
+        setNewFolderOpen(false);
+        refreshItems();
+      })
+      .catch((err: unknown) => showToast(err instanceof Error ? err.message : "Failed to create folder", "error"));
   }
 
   function handleDownloadSelected() {
@@ -168,6 +184,40 @@ export function useFileMutations({
       .catch((err: unknown) => showToast(err instanceof Error ? err.message : "Failed to unstar", "error"));
   }
 
+  function openMoveDialog() {
+    closeContextMenu();
+    setMoveDialogOpen(true);
+  }
+
+  function closeMoveDialog() {
+    setMoveDialogOpen(false);
+  }
+
+  function handleMoveSelected(destinationFolderId: number | null) {
+    const targets = selectedItems;
+    setMoveDialogOpen(false);
+    Promise.all(
+      targets.map((item) =>
+        fetch(`${mutationUrl(apiBaseUrl, item)}/move`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(
+            item.kind === "folder" ? { parent_id: destinationFolderId } : { folder_id: destinationFolderId },
+          ),
+        }).then((response) => {
+          if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
+          return response.json();
+        }),
+      ),
+    )
+      .then(() => {
+        showToast(`Moved ${targets.length} item${targets.length === 1 ? "" : "s"}.`);
+        clearSelection();
+        refreshItems();
+      })
+      .catch((err: unknown) => showToast(err instanceof Error ? err.message : "Move failed", "error"));
+  }
+
   function openDeleteForeverConfirm() {
     closeContextMenu();
     setConfirmDeleteOpen(true);
@@ -213,6 +263,10 @@ export function useFileMutations({
     handleRestoreSelected,
     handleStarSelected,
     handleUnstarSelected,
+    moveDialogOpen,
+    openMoveDialog,
+    closeMoveDialog,
+    handleMoveSelected,
     confirmDeleteOpen,
     openDeleteForeverConfirm,
     closeDeleteForeverConfirm,

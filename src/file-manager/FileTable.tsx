@@ -1,5 +1,6 @@
 import type { MouseEvent as ReactMouseEvent } from "react";
 import { FileIcon, FolderIcon, StarIcon, Table, TableBody, TableCell, TableHead, TableRow } from "@nithin-studio-app/ui-components";
+import { Thumbnail } from "./Thumbnail";
 import { formatSize, hasReadyPreview, itemKey } from "./utils";
 import type { Item } from "./types";
 
@@ -37,7 +38,7 @@ export function FileTable({ items, selectedKeys, objectUrl, onItemClick, onItemD
                 {item.kind === "folder" ? (
                   <FolderIcon />
                 ) : hasReadyPreview(item) ? (
-                  <img className="file-manager-thumb" src={objectUrl(item.preview_key!)} alt="" loading="lazy" />
+                  <Thumbnail className="file-manager-thumb" src={objectUrl(item.preview_key!)} />
                 ) : (
                   <FileIcon />
                 )}

@@ -1,4 +1,4 @@
-import { DownloadIcon, EditIcon, RefreshIcon, StarIcon, TrashIcon } from "@nithin-studio-app/ui-components";
+import { DownloadIcon, EditIcon, FolderIcon, RefreshIcon, StarIcon, TrashIcon } from "@nithin-studio-app/ui-components";
 
 interface ContextMenuProps {
   x: number;
@@ -13,6 +13,7 @@ interface ContextMenuProps {
   onDeleteForeverConfirm: () => void;
   onTrash: () => void;
   onToggleStar: () => void;
+  onMove: () => void;
 }
 
 export function ContextMenu({
@@ -28,6 +29,7 @@ export function ContextMenu({
   onDeleteForeverConfirm,
   onTrash,
   onToggleStar,
+  onMove,
 }: ContextMenuProps) {
   return (
     <ul
@@ -48,6 +50,14 @@ export function ContextMenu({
           <button type="button" onClick={onToggleStar}>
             <StarIcon />
             {allStarred ? "Remove from starred" : "Add to starred"}
+          </button>
+        </li>
+      )}
+      {!isTrash && (
+        <li>
+          <button type="button" onClick={onMove}>
+            <FolderIcon />
+            Move to...
           </button>
         </li>
       )}

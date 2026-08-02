@@ -17,6 +17,7 @@ import { ContextMenu } from "./file-manager/ContextMenu";
 import { FileGrid } from "./file-manager/FileGrid";
 import { FileManagerDialogs } from "./file-manager/FileManagerDialogs";
 import { FileTable } from "./file-manager/FileTable";
+import { MoveDialog } from "./file-manager/MoveDialog";
 import { useContextMenu } from "./file-manager/hooks/useContextMenu";
 import { useFileMutations } from "./file-manager/hooks/useFileMutations";
 import { useFilePreview } from "./file-manager/hooks/useFilePreview";
@@ -131,6 +132,7 @@ export function FileManager({
 
   const mutations = useFileMutations({
     apiBaseUrl,
+    currentFolderId: navigation.currentFolderId,
     selectedItems: selection.selectedItems,
     showToast,
     refreshItems: itemsData.refreshItems,
@@ -238,6 +240,7 @@ export function FileManager({
           onTrashSelected={mutations.handleTrashSelected}
           onStarSelected={mutations.handleStarSelected}
           onUnstarSelected={mutations.handleUnstarSelected}
+          onOpenMove={mutations.openMoveDialog}
           path={navigation.path}
           onGoToRoot={goToRoot}
           onGoToPathIndex={goToPathIndex}
@@ -378,6 +381,13 @@ export function FileManager({
         deleteCount={selection.selectedItems.length}
       />
 
+      <MoveDialog
+        open={mutations.moveDialogOpen}
+        apiBaseUrl={apiBaseUrl}
+        onClose={mutations.closeMoveDialog}
+        onSelectDestination={mutations.handleMoveSelected}
+      />
+
       {contextMenu.contextMenu && (
         <ContextMenu
           x={contextMenu.contextMenu.x}
@@ -392,6 +402,7 @@ export function FileManager({
           onDeleteForeverConfirm={mutations.openDeleteForeverConfirm}
           onTrash={mutations.handleTrashSelected}
           onToggleStar={allSelectedStarred ? mutations.handleUnstarSelected : mutations.handleStarSelected}
+          onMove={mutations.openMoveDialog}
         />
       )}
 

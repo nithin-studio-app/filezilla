@@ -511,3 +511,67 @@
 .file-manager-context-menu-danger svg {
   color: #ff6b6b !important;
 }
+
+.file-manager-move-dialog {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.file-manager-move-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  max-height: 18rem;
+  overflow-y: auto;
+}
+
+.file-manager-move-list button {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.5rem 0.6rem;
+  background: none;
+  border: none;
+  border-radius: 6px;
+  color: #e8eaed;
+  font-size: 0.85rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+.file-manager-move-list button:hover {
+  background: #26282c;
+}
+
+.file-manager-move-list button svg {
+  width: 1.1rem;
+  height: 1.1rem;
+  flex-shrink: 0;
+  color: #9aa0a6;
+}
+
+.file-manager-move-result-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.file-manager-move-result-text span:first-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-manager-move-empty {
+  padding: 0.75rem 0.6rem;
+}
+
+.file-manager-move-confirm {
+  padding-top: 0.25rem;
+  border-top: 1px solid #2a2c30;
+}
