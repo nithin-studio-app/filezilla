@@ -89,10 +89,8 @@ jobs:
           git commit -m "chore: sync version to v$VERSION"
           git push origin "$BRANCH"
 
-          PR_URL=$(gh pr create \
+          gh pr create \
             --base main \
             --head "$BRANCH" \
             --title "chore: sync version to v$VERSION" \
-            --body "v$VERSION was just published to GitHub Packages. This PR syncs \`package.json\` on \`main\` to match.")
-          PR_NUMBER="${PR_URL##*/}"
-          gh pr merge --squash --delete-branch "$PR_NUMBER"
+            --body "v$VERSION was just published to GitHub Packages. This PR syncs \`package.json\` on \`main\` to match."
