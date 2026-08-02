@@ -95,4 +95,4 @@ jobs:
             --title "chore: sync version to v$VERSION" \
             --body "v$VERSION was just published to GitHub Packages. This PR syncs \`package.json\` on \`main\` to match.")
           PR_NUMBER="${PR_URL##*/}"
-          gh pr merge --auto --squash --delete-branch "$PR_NUMBER"
+          gh pr merge --squash --delete-branch "$PR_NUMBER"
