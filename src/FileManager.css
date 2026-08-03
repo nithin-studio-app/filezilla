@@ -1,61 +1,88 @@
+/* #7e57c2 (Material "Deep Purple 400") throughout this file replaces what
+   was a near-black border color — invisible against nithin-studio's
+   indigo/purple theme (the host this normally renders inside), same fix
+   applied to its cards/inputs.
+
+   Layout is a 2x2 grid (sidebar/main x header/body) rather than two
+   independent flex columns that merely happen to line up — the header
+   row needs to read as one continuous strip spanning full width,
+   internally divided, matching the layout mockup. Row-gap only (no
+   column-gap): the header/body rows float apart with visible space
+   between them, but the two columns stay flush, divided by a border
+   line only. */
 .file-manager {
-  display: flex;
-  align-items: stretch;
-  gap: 2rem;
+  display: grid;
+  grid-template-columns: 15rem 1fr;
+  grid-template-rows: auto 1fr;
+  gap: 0.75rem 0;
   height: 100%;
   min-height: 0;
+  border: 1px solid #7e57c2; /* Material "Deep Purple 400" */
+  border-radius: 8px;
+  background: #17181b;
 }
 
+/* Lets Sidebar's and MainHeader/panel-body's actual children become direct
+   grid items of .file-manager above, instead of being trapped inside
+   their own flex box — this is what makes the header a true single row
+   spanning both columns. */
 .file-manager-sidebar,
 .file-manager-main {
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-}
-
-.file-manager-sidebar {
-  flex: 0 0 15rem;
-}
-
-.file-manager-main {
-  flex: 1;
-  min-width: 0;
+  display: contents;
 }
 
 .file-manager-panel-header {
-  flex: 0 0 auto;
-  padding: 0.75rem 0;
+  padding: 0.75rem;
 }
 
+/* Each of the 4 grid cells below touches the outer frame's own border on
+   whichever sides face the frame edge (top+left for service-header, etc.)
+   — only the sides facing the row-gap or the other column get an
+   explicit border, so no edge is ever doubled up. */
 .file-manager-service-header {
+  grid-row: 1;
+  grid-column: 1;
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.5rem;
+  border-bottom: 1px solid #7e57c2;
+  border-right: 1px solid #7e57c2;
+  background: #17181b;
 }
 
 .file-manager-main-header {
+  grid-row: 1;
+  grid-column: 2;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1.5rem;
+  border-bottom: 1px solid #7e57c2;
+  background: #17181b;
 }
 
 .file-manager-header-spacer {
   flex: 1 1 auto;
 }
 
+/* No border/fill of their own — just a plain grouping flex container.
+   The individual pills inside (and, on the toolbar side, each
+   button/toggle's own native border) already carry the visual weight;
+   an extra wrapping border around the whole cluster was redundant. */
 .file-manager-header-left {
   display: flex;
   align-items: center;
   gap: 0.75rem;
   flex: 1 1 auto;
   min-width: 0;
+  padding: 0.35rem 0.75rem;
 }
 
 .file-manager-main-header-actions {
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  padding: 0.35rem 0.5rem;
 }
 
 .file-manager-search {
@@ -69,6 +96,22 @@
   font-size: 1.05rem;
 }
 
+/* This search field sits in the header, above (not inside) the dark
+   panel-body — otherwise transparent, same fix as nithin-studio's own
+   Apps page search box. */
+.file-manager-search .textfield-outlined .textfield-input-wrapper {
+  background: #17181b;
+  border-color: #7e57c2; /* Material "Deep Purple 400" */
+}
+
+.file-manager-search .textfield-adornment {
+  color: #b39ddb; /* Material "Deep Purple 200" */
+}
+
+.file-manager-search .textfield-input::placeholder {
+  color: #b39ddb; /* Material "Deep Purple 200" */
+}
+
 .file-manager-search-collapsed {
   width: 2.1rem;
 }
@@ -80,7 +123,7 @@
   width: 2.1rem;
   height: 2.1rem;
   background: none;
-  border: 1px solid #2a2c30;
+  border: 1px solid #7e57c2;
   border-radius: 8px;
   color: #9aa0a6;
   cursor: pointer;
@@ -118,22 +161,29 @@
   height: 1rem;
 }
 
-.file-manager-back {
+/* The innermost pill level from the mockup — same border/fill treatment
+   as .file-manager-header-left/.file-manager-main-header-actions. */
+.file-manager-back,
+.file-manager-service-title {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: none;
-  border: none;
-  padding: 0.2rem;
-  margin: -0.2rem;
-  color: #9aa0a6;
+  padding: 0.35rem 0.6rem;
+  color: #f0f0f0;
+  cursor: default;
+}
+
+.file-manager-back {
   cursor: pointer;
-  border-radius: 6px;
+  border-radius: 8px;
+  background-color: #311b91;
+  border: 1px solid #311b91;
 }
 
 .file-manager-back:hover {
   color: #e8eaed;
-  background: #202226;
+  background-color: #3d229a;
+  border-color: #3d229a;
 }
 
 .file-manager-back svg {
@@ -143,12 +193,25 @@
 
 .file-manager-panel-body {
   position: relative;
-  flex: 1;
   min-height: 0;
   overflow-y: auto;
   padding: 1rem;
-  border: 1px solid #2a2c30;
-  border-radius: 12px;
+}
+
+/* The two content-row grid cells — same "only border the non-frame-facing
+   edges" reasoning as the header row above. */
+.file-manager-nav-body {
+  grid-row: 2;
+  grid-column: 1;
+  padding: 0.5rem;
+  border-right: 1px solid #7e57c2;
+  background: #17181b;
+}
+
+.file-manager-main .file-manager-panel-body {
+  grid-row: 2;
+  grid-column: 2;
+  background: #17181b;
 }
 
 .file-manager-drop-active {
@@ -184,13 +247,9 @@
   gap: 0.35rem;
   margin-bottom: 1rem;
   padding: 0.75rem 1rem;
-  border: 1px solid #2a2c30;
+  border: 1px solid #7e57c2;
   border-radius: 8px;
   background: #17181b;
-}
-
-.file-manager-nav-body {
-  padding: 0.5rem;
 }
 
 .file-manager-name {
@@ -275,7 +334,7 @@
 .file-manager-view-toggle {
   display: inline-flex;
   align-items: center;
-  border: 1px solid #2a2c30;
+  border: 1px solid #7e57c2;
   border-radius: 8px;
   overflow: hidden;
 }
@@ -293,7 +352,7 @@
 }
 
 .file-manager-view-toggle button + button {
-  border-left: 1px solid #2a2c30;
+  border-left: 1px solid #7e57c2;
 }
 
 .file-manager-view-toggle button:hover {
@@ -474,7 +533,7 @@
   padding: 0.35rem;
   list-style: none;
   background: #1a1b1e;
-  border: 1px solid #2a2c30;
+  border: 1px solid #7e57c2;
   border-radius: 8px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
@@ -573,5 +632,5 @@
 
 .file-manager-move-confirm {
   padding-top: 0.25rem;
-  border-top: 1px solid #2a2c30;
+  border-top: 1px solid #7e57c2;
 }

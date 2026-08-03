@@ -9,8 +9,8 @@ importers:
   .:
     devDependencies:
       '@nithin-studio-app/ui-components':
-        specifier: ^0.2.4
-        version: 0.2.4(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+        specifier: 0.2.5
+        version: 0.2.5(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@types/react':
         specifier: ^19.2.17
         version: 19.2.17
@@ -141,8 +141,8 @@ packages:
       '@emnapi/core': ^1.7.1 || ^2.0.0-alpha.3
       '@emnapi/runtime': ^1.7.1 || ^2.0.0-alpha.3
 
-  '@nithin-studio-app/ui-components@0.2.4':
-    resolution: {integrity: sha512-dpnDAjscokZjI1e8AJbZgP8IdwVrvXnC/Bn2/gSP96iJUp4tVGkqD2pvBy8xqitwZ8ibNDGMJmkfRwaH0eruIA==, tarball: https://npm.pkg.github.com/download/@nithin-studio-app/ui-components/0.2.4/d4f192b11a0ae935324507a0bd767f2056da3690}
+  '@nithin-studio-app/ui-components@0.2.5':
+    resolution: {integrity: sha512-w0Uiz8YXjlqOYLhiocZdVj40rfZaBGfRTvhNSUy9rqLl7kPdBGa3b5zVtDBfYxPeE0Xp+22QK/lxw3YyydajYw==, tarball: https://npm.pkg.github.com/download/@nithin-studio-app/ui-components/0.2.5/b87082e6035597c5c58f8a9346bda8c3de69dfc1}
     peerDependencies:
       react: ^19.0.0
       react-dom: ^19.0.0
@@ -711,7 +711,7 @@ snapshots:
       '@tybys/wasm-util': 0.10.3
     optional: true
 
-  '@nithin-studio-app/ui-components@0.2.4(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
+  '@nithin-studio-app/ui-components@0.2.5(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
     dependencies:
       '@fontsource/roboto': 5.3.0
       react: 19.2.8

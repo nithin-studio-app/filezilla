@@ -25,13 +25,13 @@
     "**/*.css"
   ],
   "peerDependencies": {
-    "@nithin-studio-app/ui-components": "^0.2.4",
+    "@nithin-studio-app/ui-components": "^0.2.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.0.0"
   },
   "devDependencies": {
-    "@nithin-studio-app/ui-components": "^0.2.4",
+    "@nithin-studio-app/ui-components": "0.2.5",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.3",

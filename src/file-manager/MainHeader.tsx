@@ -164,7 +164,7 @@ export function MainHeader({
       ) : (
         <div className="file-manager-header-spacer" />
       )}
-      <div className="file-manager-main-header-actions">
+      <div className="file-manager-main-header-actions" role="toolbar" aria-label="File actions">
         <div className={searchOpen ? "file-manager-search" : "file-manager-search file-manager-search-collapsed"}>
           {searchOpen ? (
             <TextField
@@ -212,12 +212,13 @@ export function MainHeader({
             <GridViewIcon />
           </button>
         </div>
-        <Button variant="outlined" size="small" startIcon={<AddIcon />} onClick={onNewFolder}>
+        <Button variant="outlined" size="small" color="#1b7491" startIcon={<AddIcon />} onClick={onNewFolder}>
           New folder
         </Button>
         <Button
           variant="contained"
           size="small"
+          color="#1b7491"
           startIcon={<UploadIcon />}
           onClick={() => fileInputRef.current?.click()}
           loading={isUploading}

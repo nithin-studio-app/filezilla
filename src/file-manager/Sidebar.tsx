@@ -27,7 +27,9 @@ export function Sidebar({ serviceName, onBack, activeNav, onGoToRoot, onSwitchNa
             <ArrowBackIcon />
           </button>
         )}
-        <Text variant="h6">{serviceName}</Text>
+        <span className="file-manager-service-title">
+          <Text variant="h6">{serviceName}</Text>
+        </span>
       </div>
       <div className="file-manager-panel-body file-manager-nav-body">
         <List>
