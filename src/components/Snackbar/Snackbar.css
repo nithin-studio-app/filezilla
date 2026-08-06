@@ -1,0 +1,85 @@
+.snackbar {
+  position: fixed;
+  z-index: 1400;
+  margin: 1.5rem;
+  max-width: calc(100vw - 3rem);
+}
+
+.snackbar-top-left {
+  top: 0;
+  left: 0;
+}
+
+.snackbar-top-center {
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Offset below filezilla's header height (not just 0/flush-to-viewport)
+   so a top-anchored toast lands inside the body instead of overlapping
+   the header bar. */
+.snackbar-top-right {
+  top: 4.5rem;
+  right: 0;
+}
+
+.snackbar-bottom-left {
+  bottom: 0;
+  left: 0;
+}
+
+.snackbar-bottom-center {
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.snackbar-bottom-right {
+  bottom: 0;
+  right: 0;
+}
+
+.snackbar-content {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  background: #ffffff;
+  border: 1px solid #e1e4e8;
+  color: #1a1d21;
+  font-size: 0.875rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.snackbar-message {
+  flex: 1;
+  min-width: 0;
+}
+
+.snackbar-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.4rem;
+  height: 1.4rem;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: inherit;
+  opacity: 0.8;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.snackbar-close:hover {
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.snackbar-close svg {
+  width: 0.85rem;
+  height: 0.85rem;
+}

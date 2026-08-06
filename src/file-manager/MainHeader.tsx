@@ -17,7 +17,7 @@ import {
   TextField,
   TrashIcon,
   UploadIcon,
-} from "@nithin-studio-app/ui-components";
+} from "../components";
 import type { PathEntry, ViewMode } from "./types";
 
 interface MainHeaderProps {
@@ -92,6 +92,7 @@ export function MainHeader({
               checked={selectedCount === totalCount}
               indeterminate={selectedCount > 0 && selectedCount < totalCount}
               onChange={onToggleSelectAll}
+              color="var(--fm-accent)"
               aria-label="Select all"
             />
           )}
@@ -109,31 +110,73 @@ export function MainHeader({
               <div className="file-manager-selection-actions">
                 {isTrash ? (
                   <>
-                    <Button variant="outlined" size="small" startIcon={<RefreshIcon />} onClick={onRestoreSelected}>
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      color="var(--fm-accent-hover)"
+                      startIcon={<RefreshIcon />}
+                      onClick={onRestoreSelected}
+                    >
                       Restore
                     </Button>
-                    <Button variant="outlined" size="small" startIcon={<TrashIcon />} onClick={onDeleteForeverConfirm}>
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      color="var(--fm-danger)"
+                      startIcon={<TrashIcon />}
+                      onClick={onDeleteForeverConfirm}
+                    >
                       Delete forever
                     </Button>
                   </>
                 ) : (
                   <>
-                    <Button variant="outlined" size="small" startIcon={<DownloadIcon />} onClick={onDownloadSelected}>
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      color="var(--fm-accent-hover)"
+                      startIcon={<DownloadIcon />}
+                      onClick={onDownloadSelected}
+                    >
                       Download
                     </Button>
                     {isStarred ? (
-                      <Button variant="outlined" size="small" startIcon={<StarIcon />} onClick={onUnstarSelected}>
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        color="var(--fm-accent-hover)"
+                        startIcon={<StarIcon />}
+                        onClick={onUnstarSelected}
+                      >
                         Remove from starred
                       </Button>
                     ) : (
-                      <Button variant="outlined" size="small" startIcon={<StarIcon />} onClick={onStarSelected}>
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        color="var(--fm-accent-hover)"
+                        startIcon={<StarIcon />}
+                        onClick={onStarSelected}
+                      >
                         Add to starred
                       </Button>
                     )}
-                    <Button variant="outlined" size="small" startIcon={<FolderIcon />} onClick={onOpenMove}>
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      color="var(--fm-accent-hover)"
+                      startIcon={<FolderIcon />}
+                      onClick={onOpenMove}
+                    >
                       Move to...
                     </Button>
-                    <Button variant="outlined" size="small" startIcon={<TrashIcon />} onClick={onTrashSelected}>
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      color="var(--fm-danger)"
+                      startIcon={<TrashIcon />}
+                      onClick={onTrashSelected}
+                    >
                       Delete
                     </Button>
                   </>
@@ -212,13 +255,13 @@ export function MainHeader({
             <GridViewIcon />
           </button>
         </div>
-        <Button variant="outlined" size="small" color="#1b7491" startIcon={<AddIcon />} onClick={onNewFolder}>
+        <Button variant="outlined" size="small" color="var(--fm-accent-hover)" startIcon={<AddIcon />} onClick={onNewFolder}>
           New folder
         </Button>
         <Button
           variant="contained"
           size="small"
-          color="#1b7491"
+          color="var(--fm-accent)"
           startIcon={<UploadIcon />}
           onClick={() => fileInputRef.current?.click()}
           loading={isUploading}

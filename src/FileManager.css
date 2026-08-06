@@ -1,25 +1,52 @@
-/* #7e57c2 (Material "Deep Purple 400") throughout this file replaces what
-   was a near-black border color — invisible against nithin-studio's
-   indigo/purple theme (the host this normally renders inside), same fix
-   applied to its cards/inputs.
+/* Token system — light theme. The workspace has standardized on light-only
+   going forward (no dark mode), so these are the only values, not one side
+   of a light/dark switch. --fm-accent keeps the teal hue already used on
+   the primary action buttons, just deepened enough (#1f93b8 -> #0e7490) to
+   hit real text/icon contrast on a white background instead of a near-black
+   one. Defined on :root rather than .file-manager: ui-components' Dialog
+   portals to document.body, breaking out of .file-manager's DOM subtree,
+   so a component-scoped custom property wouldn't reach anything rendered
+   inside a dialog (MoveDialog, the new-folder/rename/confirm dialogs). */
+:root {
+  --fm-bg: #f6f7f9;
+  --fm-surface: #ffffff;
+  --fm-surface-elevated: #ffffff;
+  --fm-surface-hover: #eef0f2;
+  --fm-surface-hover-strong: #e1e4e8;
+  --fm-border: #e1e4e8;
+  --fm-text: #1a1d21;
+  --fm-text-muted: #6b7076;
+  --fm-text-faint: #a7abb1;
+  --fm-accent: #0e7490;
+  --fm-accent-hover: #0b5e75;
+  --fm-accent-soft: rgb(14 116 144 / 10%);
+  --fm-accent-soft-strong: rgb(14 116 144 / 16%);
+  --fm-accent-border: rgb(14 116 144 / 45%);
+  --fm-star: #9c6f00;
+  --fm-danger: #c62828;
+  --fm-warning: #8a4b00;
+  --fm-mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+}
 
-   Layout is a 2x2 grid (sidebar/main x header/body) rather than two
-   independent flex columns that merely happen to line up — the header
-   row needs to read as one continuous strip spanning full width,
-   internally divided, matching the layout mockup. Row-gap only (no
-   column-gap): the header/body rows float apart with visible space
-   between them, but the two columns stay flush, divided by a border
-   line only. */
+/* Full-bleed — this used to be a card floating inside nithin-studio's own
+   page chrome (hence the outer border + radius); standalone, it *is* the
+   page, so the frame is gone and it fills the viewport instead.
+
+   Layout is still a 2x2 grid (sidebar/main x header/body) rather than two
+   independent flex columns that merely happen to line up — the header row
+   needs to read as one continuous strip spanning full width, internally
+   divided. No gap between rows: this used to float the header/body apart
+   with a sliver of the host's page color showing through the seam — with
+   no host anymore that sliver was just a flat black bar, so the two rows
+   sit flush and the header's own border-bottom does the dividing instead. */
 .file-manager {
   display: grid;
   grid-template-columns: 15rem 1fr;
   grid-template-rows: auto 1fr;
-  gap: 0.75rem 0;
   height: 100%;
   min-height: 0;
-  border: 1px solid #7e57c2; /* Material "Deep Purple 400" */
-  border-radius: 8px;
-  background: #17181b;
+  background: var(--fm-bg);
+  color: var(--fm-text);
 }
 
 /* Lets Sidebar's and MainHeader/panel-body's actual children become direct
@@ -35,19 +62,15 @@
   padding: 0.75rem;
 }
 
-/* Each of the 4 grid cells below touches the outer frame's own border on
-   whichever sides face the frame edge (top+left for service-header, etc.)
-   — only the sides facing the row-gap or the other column get an
-   explicit border, so no edge is ever doubled up. */
 .file-manager-service-header {
   grid-row: 1;
   grid-column: 1;
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  border-bottom: 1px solid #7e57c2;
-  border-right: 1px solid #7e57c2;
-  background: #17181b;
+  border-bottom: 1px solid var(--fm-border);
+  border-right: 1px solid var(--fm-border);
+  background: var(--fm-surface);
 }
 
 .file-manager-main-header {
@@ -57,8 +80,8 @@
   align-items: center;
   justify-content: space-between;
   gap: 1.5rem;
-  border-bottom: 1px solid #7e57c2;
-  background: #17181b;
+  border-bottom: 1px solid var(--fm-border);
+  background: var(--fm-surface);
 }
 
 .file-manager-header-spacer {
@@ -92,24 +115,29 @@
   transition: width 0.2s ease;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .file-manager-search {
+    transition: none;
+  }
+}
+
 .file-manager-search input {
   font-size: 1.05rem;
 }
 
-/* This search field sits in the header, above (not inside) the dark
-   panel-body — otherwise transparent, same fix as nithin-studio's own
-   Apps page search box. */
+/* This search field sits in the header, above (not inside) the panel-body
+   — otherwise transparent. */
 .file-manager-search .textfield-outlined .textfield-input-wrapper {
-  background: #17181b;
-  border-color: #7e57c2; /* Material "Deep Purple 400" */
+  background: var(--fm-bg);
+  border-color: var(--fm-border);
 }
 
 .file-manager-search .textfield-adornment {
-  color: #b39ddb; /* Material "Deep Purple 200" */
+  color: var(--fm-text-muted);
 }
 
 .file-manager-search .textfield-input::placeholder {
-  color: #b39ddb; /* Material "Deep Purple 200" */
+  color: var(--fm-text-muted);
 }
 
 .file-manager-search-collapsed {
@@ -123,15 +151,15 @@
   width: 2.1rem;
   height: 2.1rem;
   background: none;
-  border: 1px solid #7e57c2;
+  border: 1px solid var(--fm-border);
   border-radius: 8px;
-  color: #9aa0a6;
+  color: var(--fm-text-muted);
   cursor: pointer;
 }
 
 .file-manager-search-toggle:hover {
-  color: #e8eaed;
-  background: #202226;
+  color: var(--fm-text);
+  background: var(--fm-surface-hover);
 }
 
 .file-manager-search-toggle svg {
@@ -146,14 +174,14 @@
   background: none;
   border: none;
   padding: 0.2rem;
-  color: #9aa0a6;
+  color: var(--fm-text-muted);
   cursor: pointer;
   border-radius: 6px;
 }
 
 .file-manager-search-collapse:hover {
-  color: #e8eaed;
-  background: #202226;
+  color: var(--fm-text);
+  background: var(--fm-surface-hover);
 }
 
 .file-manager-search-collapse svg {
@@ -161,29 +189,29 @@
   height: 1rem;
 }
 
-/* The innermost pill level from the mockup — same border/fill treatment
-   as .file-manager-header-left/.file-manager-main-header-actions. */
+/* The innermost pill level from the original mockup — same border/fill
+   treatment as .file-manager-header-left/.file-manager-main-header-actions. */
 .file-manager-back,
 .file-manager-service-title {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: 0.35rem 0.6rem;
-  color: #f0f0f0;
+  color: var(--fm-text);
   cursor: default;
 }
 
 .file-manager-back {
   cursor: pointer;
   border-radius: 8px;
-  background-color: #311b91;
-  border: 1px solid #311b91;
+  background-color: var(--fm-surface-hover);
+  border: 1px solid var(--fm-border);
 }
 
 .file-manager-back:hover {
-  color: #e8eaed;
-  background-color: #3d229a;
-  border-color: #3d229a;
+  color: var(--fm-text);
+  background-color: var(--fm-surface-hover-strong);
+  border-color: var(--fm-border);
 }
 
 .file-manager-back svg {
@@ -198,28 +226,32 @@
   padding: 1rem;
 }
 
-/* The two content-row grid cells — same "only border the non-frame-facing
-   edges" reasoning as the header row above. */
 .file-manager-nav-body {
   grid-row: 2;
   grid-column: 1;
   padding: 0.5rem;
-  border-right: 1px solid #7e57c2;
-  background: #17181b;
+  border-right: 1px solid var(--fm-border);
+  background: var(--fm-surface);
 }
 
 .file-manager-main .file-manager-panel-body {
   grid-row: 2;
   grid-column: 2;
-  background: #17181b;
+  background: var(--fm-surface);
 }
 
 .file-manager-drop-active {
-  border-color: #2962ff;
+  border-color: var(--fm-accent);
   border-style: dashed;
-  background: rgba(41, 98, 255, 0.06);
+  background: var(--fm-accent-soft);
 }
 
+/* This scrim stays dark regardless of the app's own light theme, same
+   reasoning as a modal Backdrop — it needs to read as "something is
+   overlaid here" against whatever the underlying folder content looks
+   like, and a light-on-light wash wouldn't do that. Its icon/text color is
+   a one-off pale tint rather than --fm-accent-hover (now a dark teal
+   calibrated for a white background, not a near-black one). */
 .file-manager-drop-overlay {
   position: absolute;
   inset: 0;
@@ -230,8 +262,8 @@
   justify-content: center;
   gap: 0.5rem;
   pointer-events: none;
-  color: #2962ff;
-  background: rgba(10, 11, 13, 0.75);
+  color: #8fd8e8;
+  background: rgb(9 10 12 / 72%);
   border-radius: 11px;
 }
 
@@ -247,9 +279,9 @@
   gap: 0.35rem;
   margin-bottom: 1rem;
   padding: 0.75rem 1rem;
-  border: 1px solid #7e57c2;
+  border: 1px solid var(--fm-border);
   border-radius: 8px;
-  background: #17181b;
+  background: var(--fm-surface);
 }
 
 .file-manager-name {
@@ -270,13 +302,13 @@
   width: 1.2rem;
   height: 1.2rem;
   flex-shrink: 0;
-  color: #9aa0a6;
+  color: var(--fm-text-muted);
 }
 
 .file-manager-table-star {
   display: inline-flex;
   flex-shrink: 0;
-  color: #ffca28;
+  color: var(--fm-star);
 }
 
 .file-manager-table-star svg {
@@ -290,6 +322,17 @@
   flex-shrink: 0;
   object-fit: cover;
   border-radius: 3px;
+}
+
+/* Byte counts get the monospace/tabular-numeral treatment — a quiet nod to
+   this app's FTP-client namesake (transfer logs, listing columns), and it
+   makes a column of sizes actually align by digit instead of just by
+   right-edge. */
+.file-manager-size-cell {
+  font-family: var(--fm-mono);
+  font-variant-numeric: tabular-nums;
+  color: var(--fm-text-muted);
+  font-size: 0.85rem;
 }
 
 .file-manager-breadcrumbs {
@@ -308,7 +351,7 @@
   border: none;
   padding: 0;
   margin: 0;
-  color: #9aa0a6;
+  color: var(--fm-text-muted);
   font-size: 0.85rem;
   cursor: pointer;
 }
@@ -324,17 +367,17 @@
 }
 
 .file-manager-breadcrumbs button:hover {
-  color: #e8eaed;
+  color: var(--fm-text);
 }
 
 .file-manager-breadcrumbs li:last-child button {
-  color: #e8eaed;
+  color: var(--fm-text);
 }
 
 .file-manager-view-toggle {
   display: inline-flex;
   align-items: center;
-  border: 1px solid #7e57c2;
+  border: 1px solid var(--fm-border);
   border-radius: 8px;
   overflow: hidden;
 }
@@ -347,22 +390,22 @@
   height: 2.1rem;
   background: none;
   border: none;
-  color: #9aa0a6;
+  color: var(--fm-text-muted);
   cursor: pointer;
 }
 
 .file-manager-view-toggle button + button {
-  border-left: 1px solid #7e57c2;
+  border-left: 1px solid var(--fm-border);
 }
 
 .file-manager-view-toggle button:hover {
-  color: #e8eaed;
-  background: #202226;
+  color: var(--fm-text);
+  background: var(--fm-surface-hover);
 }
 
 .file-manager-view-toggle button.active {
-  color: #fff;
-  background: rgba(41, 98, 255, 0.2);
+  color: var(--fm-accent-hover);
+  background: var(--fm-accent-soft);
 }
 
 .file-manager-view-toggle svg {
@@ -382,15 +425,15 @@
 }
 
 .file-manager-grid-item:hover {
-  background: #202226;
+  background: var(--fm-surface-hover);
 }
 
 .file-manager-grid-item-selected {
-  background: rgba(41, 98, 255, 0.15);
+  background: var(--fm-accent-soft);
 }
 
 .file-manager-grid-item-selected:hover {
-  background: rgba(41, 98, 255, 0.22);
+  background: var(--fm-accent-soft-strong);
 }
 
 .file-manager-grid-star {
@@ -399,7 +442,7 @@
   right: 0.5rem;
   z-index: 1;
   display: inline-flex;
-  color: #ffca28;
+  color: var(--fm-star);
 }
 
 .file-manager-grid-star svg {
@@ -426,7 +469,7 @@
 .file-manager-grid-item-button svg {
   width: 3.25rem;
   height: 3.25rem;
-  color: #9aa0a6;
+  color: var(--fm-text-muted);
 }
 
 .file-manager-thumb-grid {
@@ -436,7 +479,7 @@
 
 .file-manager-grid-item-name {
   font-size: 0.85rem;
-  color: #e8eaed;
+  color: var(--fm-text);
   max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -444,8 +487,10 @@
 }
 
 .file-manager-grid-item-size {
+  font-family: var(--fm-mono);
+  font-variant-numeric: tabular-nums;
   font-size: 0.75rem;
-  color: #9aa0a6;
+  color: var(--fm-text-muted);
 }
 
 .file-manager-loading-state {
@@ -457,10 +502,17 @@
 .file-manager-error-state {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 0.75rem;
-  max-width: 28rem;
-  margin: 2rem auto 0;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  height: 100%;
+  max-width: 26rem;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.file-manager-error-state .file-manager-error-retry {
+  margin-top: 1.25rem;
 }
 
 .file-manager-empty-state {
@@ -468,18 +520,56 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 0.4rem;
   height: 100%;
   max-width: 24rem;
   margin: 0 auto;
   text-align: center;
 }
 
-.file-manager-empty-state svg {
-  width: 3.5rem;
-  height: 3.5rem;
-  color: #4a4d52;
-  margin-bottom: 0.5rem;
+/* A soft tinted badge behind the empty-state icon, rather than a small
+   flat gray glyph — most of these stay a quiet neutral tone (Trash,
+   Recently Added), reserving actual color for the two states worth an
+   emotional nudge: Home's default "add your first thing here" and
+   Starred's "here's where the things you love live". --glow drives the
+   badge's tint, so a state only needs to set one variable to look
+   intentional rather than default. No outer glow/drop-shadow here (that
+   reads as a dark-mode/neon technique) — on a white background this stays
+   a clean, flat tinted circle instead. */
+.file-manager-empty-icon {
+  --glow: var(--fm-accent);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 6rem;
+  height: 6rem;
+  margin-bottom: 1.25rem;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--glow) 10%, var(--fm-surface));
+  border: 1px solid color-mix(in srgb, var(--glow) 22%, var(--fm-border));
+}
+
+.file-manager-empty-icon svg {
+  width: 2.5rem;
+  height: 2.5rem;
+  color: var(--glow);
+}
+
+.file-manager-empty-icon-star {
+  --glow: var(--fm-star);
+}
+
+.file-manager-empty-icon-muted {
+  --glow: var(--fm-text-faint);
+}
+
+.file-manager-empty-icon-warning {
+  --glow: var(--fm-warning);
+}
+
+.file-manager-empty-icon-danger {
+  --glow: var(--fm-danger);
 }
 
 .file-manager-loading-more {
@@ -504,14 +594,14 @@
   border: none;
   padding: 0.2rem;
   margin: -0.2rem;
-  color: #9aa0a6;
+  color: var(--fm-text-muted);
   cursor: pointer;
   border-radius: 6px;
 }
 
 .file-manager-selection-clear:hover {
-  color: #e8eaed;
-  background: #202226;
+  color: var(--fm-text);
+  background: var(--fm-surface-hover);
 }
 
 .file-manager-selection-clear svg {
@@ -532,10 +622,10 @@
   margin: 0;
   padding: 0.35rem;
   list-style: none;
-  background: #1a1b1e;
-  border: 1px solid #7e57c2;
+  background: var(--fm-surface-elevated);
+  border: 1px solid var(--fm-border);
   border-radius: 8px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 16%);
 }
 
 .file-manager-context-menu button {
@@ -547,28 +637,28 @@
   background: none;
   border: none;
   border-radius: 6px;
-  color: #e8eaed;
+  color: var(--fm-text);
   font-size: 0.85rem;
   text-align: left;
   cursor: pointer;
 }
 
 .file-manager-context-menu button:hover {
-  background: #26282c;
+  background: var(--fm-surface-hover-strong);
 }
 
 .file-manager-context-menu button svg {
   width: 1.1rem;
   height: 1.1rem;
-  color: #9aa0a6;
+  color: var(--fm-text-muted);
 }
 
 .file-manager-context-menu-danger {
-  color: #ff6b6b !important;
+  color: var(--fm-danger) !important;
 }
 
 .file-manager-context-menu-danger svg {
-  color: #ff6b6b !important;
+  color: var(--fm-danger) !important;
 }
 
 .file-manager-move-dialog {
@@ -597,21 +687,21 @@
   background: none;
   border: none;
   border-radius: 6px;
-  color: #e8eaed;
+  color: var(--fm-text);
   font-size: 0.85rem;
   text-align: left;
   cursor: pointer;
 }
 
 .file-manager-move-list button:hover {
-  background: #26282c;
+  background: var(--fm-surface-hover-strong);
 }
 
 .file-manager-move-list button svg {
   width: 1.1rem;
   height: 1.1rem;
   flex-shrink: 0;
-  color: #9aa0a6;
+  color: var(--fm-text-muted);
 }
 
 .file-manager-move-result-text {
@@ -632,5 +722,5 @@
 
 .file-manager-move-confirm {
   padding-top: 0.25rem;
-  border-top: 1px solid #7e57c2;
+  border-top: 1px solid var(--fm-border);
 }

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { Item } from "../types";
+import { describeFetchError, type FetchErrorInfo } from "../utils";
 
 interface UseItemsDataOptions {
   apiBaseUrl: string;
@@ -30,7 +31,7 @@ export function useItemsData({
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [hasMore, setHasMore] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<FetchErrorInfo | null>(null);
   const folderRequestController = useRef<AbortController | null>(null);
 
   function itemsUrl(offset: number): string {
@@ -66,9 +67,9 @@ export function useItemsData({
       })
       .catch((err: unknown) => {
         if (controller.signal.aborted) return;
-        const text = err instanceof Error ? err.message : "Failed to load items";
-        setError(text);
-        showToast(text, "error");
+        const info = describeFetchError(err, "Couldn't load this folder");
+        setError(info);
+        showToast(info.message, "error");
       })
       .finally(() => {
         if (!controller.signal.aborted) setLoading(false);
@@ -87,9 +88,9 @@ export function useItemsData({
       })
       .then(setTrashItems)
       .catch((err: unknown) => {
-        const text = err instanceof Error ? err.message : "Failed to load trash";
-        setError(text);
-        showToast(text, "error");
+        const info = describeFetchError(err, "Couldn't load trash");
+        setError(info);
+        showToast(info.message, "error");
       })
       .finally(() => setLoading(false));
   }
@@ -109,9 +110,9 @@ export function useItemsData({
       })
       .then(setRecentItems)
       .catch((err: unknown) => {
-        const text = err instanceof Error ? err.message : "Failed to load recently added items";
-        setError(text);
-        showToast(text, "error");
+        const info = describeFetchError(err, "Couldn't load recently added items");
+        setError(info);
+        showToast(info.message, "error");
       })
       .finally(() => setLoading(false));
   }
@@ -131,9 +132,9 @@ export function useItemsData({
       })
       .then(setStarredItems)
       .catch((err: unknown) => {
-        const text = err instanceof Error ? err.message : "Failed to load starred items";
-        setError(text);
-        showToast(text, "error");
+        const info = describeFetchError(err, "Couldn't load starred items");
+        setError(info);
+        showToast(info.message, "error");
       })
       .finally(() => setLoading(false));
   }
@@ -168,9 +169,9 @@ export function useItemsData({
         setHasMore(data.has_more);
       })
       .catch((err: unknown) => {
-        const text = err instanceof Error ? err.message : "Failed to load items";
-        setError(text);
-        showToast(text, "error");
+        const info = describeFetchError(err, "Couldn't load this folder");
+        setError(info);
+        showToast(info.message, "error");
       })
       .finally(() => setLoading(false));
   }
@@ -193,7 +194,7 @@ export function useItemsData({
       })
       .catch((err: unknown) => {
         if (controller.signal.aborted) return;
-        showToast(err instanceof Error ? err.message : "Failed to load more items", "error");
+        showToast(describeFetchError(err, "Couldn't load more items").message, "error");
       })
       .finally(() => {
         if (!controller.signal.aborted) setLoadingMore(false);

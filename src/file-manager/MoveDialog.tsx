@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Breadcrumbs, Button, Dialog, FolderIcon, HomeIcon, SearchIcon, Text, TextField } from "@nithin-studio-app/ui-components";
+import { Breadcrumbs, Button, Dialog, FolderIcon, HomeIcon, SearchIcon, Text, TextField } from "../components";
 import type { Item, PathEntry } from "./types";
 
 interface FolderResult {
@@ -101,7 +101,7 @@ export function MoveDialog({ open, apiBaseUrl, onClose, onSelectDestination }: M
           <ul className="file-manager-move-list">
             {results.length === 0 && (
               <li className="file-manager-move-empty">
-                <Text variant="body2" color="#9aa0a6">
+                <Text variant="body2" color="var(--fm-text-muted)">
                   No folders matching "{query.trim()}".
                 </Text>
               </li>
@@ -113,7 +113,7 @@ export function MoveDialog({ open, apiBaseUrl, onClose, onSelectDestination }: M
                   <span className="file-manager-move-result-text">
                     <span>{result.name}</span>
                     {result.path.length > 1 && (
-                      <Text variant="body2" color="#9aa0a6">
+                      <Text variant="body2" color="var(--fm-text-muted)">
                         {result.path
                           .slice(0, -1)
                           .map((entry) => entry.name)
@@ -142,7 +142,7 @@ export function MoveDialog({ open, apiBaseUrl, onClose, onSelectDestination }: M
             <ul className="file-manager-move-list">
               {!loading && folders.length === 0 && (
                 <li className="file-manager-move-empty">
-                  <Text variant="body2" color="#9aa0a6">
+                  <Text variant="body2" color="var(--fm-text-muted)">
                     No subfolders here.
                   </Text>
                 </li>
@@ -159,7 +159,13 @@ export function MoveDialog({ open, apiBaseUrl, onClose, onSelectDestination }: M
           </>
         )}
         <div className="file-manager-move-confirm">
-          <Button variant="contained" size="small" fullWidth onClick={() => onSelectDestination(currentFolderId)}>
+          <Button
+            variant="contained"
+            size="small"
+            fullWidth
+            color="var(--fm-accent)"
+            onClick={() => onSelectDestination(currentFolderId)}
+          >
             Move here{path.length > 0 ? ` (${path[path.length - 1].name})` : " (Home)"}
           </Button>
         </div>

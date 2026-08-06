@@ -1,0 +1,163 @@
+.table-container {
+  overflow-x: auto;
+  width: 100%;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.table-caption {
+  caption-side: bottom;
+  padding: 0.6rem 1rem;
+  font-size: 0.75rem;
+  color: #6b7076;
+  text-align: left;
+}
+
+.table-head .table-cell {
+  font-weight: 600;
+  color: #6b7076;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  border-bottom: 1px solid #e1e4e8;
+  padding: 0.6rem 1rem;
+}
+
+.table-sticky-header .table-head .table-cell {
+  position: sticky;
+  top: 0;
+  background: #ffffff;
+  z-index: 1;
+}
+
+.table-cell {
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid #eceef0;
+  color: #1a1d21;
+  text-align: left;
+}
+
+.table-dense .table-cell {
+  padding: 0.35rem 1rem;
+}
+
+.table-cell-center {
+  text-align: center;
+}
+
+.table-cell-right {
+  text-align: right;
+}
+
+.table-cell-none {
+  padding: 0;
+}
+
+.table-cell-checkbox {
+  width: 1px;
+  padding: 0.6rem 0 0.6rem 1rem;
+}
+
+.table-row-hover:hover .table-cell {
+  background: rgba(0, 0, 0, 0.025);
+}
+
+.table-row-selected .table-cell {
+  background: var(--fm-accent-soft);
+}
+
+.table-footer .table-cell {
+  border-top: 1px solid #e1e4e8;
+  border-bottom: none;
+  font-weight: 600;
+}
+
+.table-sort-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  color: inherit;
+  font: inherit;
+  text-transform: inherit;
+  letter-spacing: inherit;
+  cursor: pointer;
+}
+
+.table-sort-label:hover {
+  color: #1a1d21;
+}
+
+.table-sort-icon {
+  width: 0.85rem;
+  height: 0.85rem;
+  opacity: 0;
+  transition: opacity 0.15s, transform 0.15s;
+}
+
+.table-sort-label:hover .table-sort-icon {
+  opacity: 0.6;
+}
+
+.table-sort-label-active .table-sort-icon {
+  opacity: 1;
+}
+
+.table-sort-icon-desc {
+  transform: rotate(180deg);
+}
+
+.table-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1.25rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.8rem;
+  color: #6b7076;
+}
+
+.table-pagination-rows-per-page {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.table-pagination select {
+  background: #ffffff;
+  color: #1a1d21;
+  border: 1px solid #d5d9dd;
+  border-radius: 6px;
+  padding: 0.2rem 0.4rem;
+  font: inherit;
+}
+
+.table-pagination button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  background: none;
+  border: 1px solid #d5d9dd;
+  border-radius: 6px;
+  color: #1a1d21;
+  cursor: pointer;
+}
+
+.table-pagination button svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.table-pagination button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}

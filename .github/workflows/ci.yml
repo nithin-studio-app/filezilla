@@ -9,7 +9,6 @@ concurrency:
 
 permissions:
   contents: read
-  packages: read
 
 jobs:
   checks:
@@ -24,12 +23,8 @@ jobs:
         with:
           node-version: 24
           cache: pnpm
-          registry-url: https://npm.pkg.github.com
-          scope: "@nithin-studio-app"
 
       - run: pnpm install --frozen-lockfile
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - run: pnpm lint
       - run: pnpm build

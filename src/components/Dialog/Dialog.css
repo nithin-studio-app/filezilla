@@ -1,0 +1,55 @@
+.dialog-panel {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-height: calc(100vh - 4rem);
+  margin: 2rem;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.18);
+  outline: none;
+  overflow: hidden;
+}
+
+.dialog-xs {
+  max-width: 20rem;
+}
+
+.dialog-sm {
+  max-width: 28rem;
+}
+
+.dialog-md {
+  max-width: 38rem;
+}
+
+.dialog-lg {
+  max-width: 50rem;
+}
+
+.dialog-full-width {
+  width: calc(100% - 4rem);
+}
+
+.dialog-title {
+  padding: 1.25rem 1.5rem 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1a1d21;
+}
+
+.dialog-content {
+  padding: 0.5rem 1.5rem 1.25rem;
+  overflow-y: auto;
+  color: #4b4f56;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  padding: 0.85rem 1.5rem;
+  border-top: 1px solid #e1e4e8;
+}

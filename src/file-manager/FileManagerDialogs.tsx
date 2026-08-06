@@ -1,4 +1,4 @@
-import { Button, Dialog, Text, TextField } from "@nithin-studio-app/ui-components";
+import { Button, Dialog, Text, TextField } from "../components";
 
 interface FileManagerDialogsProps {
   newFolderOpen: boolean;
@@ -43,10 +43,10 @@ export function FileManagerDialogs({
         title="New folder"
         actions={
           <>
-            <Button variant="text" onClick={onNewFolderClose}>
+            <Button variant="text" color="var(--fm-text-muted)" onClick={onNewFolderClose}>
               Cancel
             </Button>
-            <Button variant="contained" onClick={onCreateFolder}>
+            <Button variant="contained" color="var(--fm-accent)" onClick={onCreateFolder}>
               Create
             </Button>
           </>
@@ -61,10 +61,10 @@ export function FileManagerDialogs({
         title="Rename"
         actions={
           <>
-            <Button variant="text" onClick={onRenameClose}>
+            <Button variant="text" color="var(--fm-text-muted)" onClick={onRenameClose}>
               Cancel
             </Button>
-            <Button variant="contained" onClick={onSubmitRename}>
+            <Button variant="contained" color="var(--fm-accent)" onClick={onSubmitRename}>
               Rename
             </Button>
           </>
@@ -79,10 +79,10 @@ export function FileManagerDialogs({
         title="Delete forever"
         actions={
           <>
-            <Button variant="text" onClick={onConfirmDeleteClose}>
+            <Button variant="text" color="var(--fm-text-muted)" onClick={onConfirmDeleteClose}>
               Cancel
             </Button>
-            <Button variant="contained" onClick={onConfirmDeleteForever}>
+            <Button variant="contained" color="var(--fm-danger)" onClick={onConfirmDeleteForever}>
               Delete forever
             </Button>
           </>

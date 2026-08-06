@@ -1,5 +1,5 @@
 import type { MouseEvent as ReactMouseEvent } from "react";
-import { FileIcon, FolderIcon, StarIcon } from "@nithin-studio-app/ui-components";
+import { FileIcon, FolderIcon, StarIcon } from "../components";
 import { Thumbnail } from "./Thumbnail";
 import { formatSize, hasReadyPreview, itemKey } from "./utils";
 import type { Item } from "./types";

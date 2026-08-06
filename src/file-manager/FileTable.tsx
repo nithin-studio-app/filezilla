@@ -1,5 +1,5 @@
 import type { MouseEvent as ReactMouseEvent } from "react";
-import { FileIcon, FolderIcon, StarIcon, Table, TableBody, TableCell, TableHead, TableRow } from "@nithin-studio-app/ui-components";
+import { FileIcon, FolderIcon, StarIcon, Table, TableBody, TableCell, TableHead, TableRow } from "../components";
 import { Thumbnail } from "./Thumbnail";
 import { formatSize, hasReadyPreview, itemKey } from "./utils";
 import type { Item } from "./types";
@@ -50,7 +50,9 @@ export function FileTable({ items, selectedKeys, objectUrl, onItemClick, onItemD
                 )}
               </button>
             </TableCell>
-            <TableCell align="right">{item.kind === "file" ? formatSize(item.size_bytes) : "—"}</TableCell>
+            <TableCell align="right">
+              <span className="file-manager-size-cell">{item.kind === "file" ? formatSize(item.size_bytes) : "—"}</span>
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>

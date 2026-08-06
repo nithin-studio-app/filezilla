@@ -1,4 +1,4 @@
-import { DownloadIcon, EditIcon, FolderIcon, RefreshIcon, StarIcon, TrashIcon } from "@nithin-studio-app/ui-components";
+import { DownloadIcon, EditIcon, FolderIcon, RefreshIcon, StarIcon, TrashIcon } from "../components";
 
 interface ContextMenuProps {
   x: number;

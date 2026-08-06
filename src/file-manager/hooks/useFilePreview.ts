@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import type { MediaPreviewItem } from "@nithin-studio-app/ui-components";
+import type { MediaPreviewItem } from "../../components";
 import { buildObjectUrl, hasReadyPreview, isVideo } from "../utils";
 import type { Item } from "../types";
 

@@ -37,6 +37,35 @@ export function buildObjectUrl(apiBaseUrl: string, key: string): string {
   return `${apiBaseUrl}/objects/${encodeURIComponent(key)}`;
 }
 
+export interface FetchErrorInfo {
+  // A rejected fetch() throws a bare TypeError when the request never got
+  // a response at all — connection refused, DNS failure, offline — as
+  // opposed to an HTTP error status, which resolves normally and is thrown
+  // separately as a plain Error with the status text. That's the common
+  // case during local dev (the backend just isn't running yet), so it's
+  // worth telling apart from a real application error and given a calmer
+  // presentation — but the message itself stays generic (no backend
+  // name/URL) rather than exposing implementation details to the user.
+  unreachable: boolean;
+  title: string;
+  message: string;
+}
+
+export function describeFetchError(err: unknown, fallbackTitle: string): FetchErrorInfo {
+  if (err instanceof TypeError) {
+    return {
+      unreachable: true,
+      title: "Something went wrong",
+      message: "We couldn't load your files. Check your connection and try again.",
+    };
+  }
+  return {
+    unreachable: false,
+    title: fallbackTitle,
+    message: err instanceof Error ? err.message : "Something went wrong.",
+  };
+}
+
 export function mutationUrl(apiBaseUrl: string, item: Item): string {
   return `${apiBaseUrl}/${item.kind === "folder" ? "folders" : "files"}/${item.id}`;
 }

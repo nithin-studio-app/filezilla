@@ -2,3 +2,7 @@ node_modules
 dist
 *.local
 .DS_Store
+.env
+
+# Per-app Claude Code context — not shared to GitHub
+CLAUDE.md

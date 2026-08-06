@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FileIcon } from "@nithin-studio-app/ui-components";
+import { FileIcon } from "../components";
 
 interface ThumbnailProps {
   src: string;

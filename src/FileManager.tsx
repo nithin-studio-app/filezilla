@@ -4,6 +4,7 @@ import {
   Alert,
   Button,
   CalendarIcon,
+  ErrorIcon,
   FolderIcon,
   MediaPreview,
   ProgressBar,
@@ -12,7 +13,8 @@ import {
   Text,
   TrashIcon,
   UploadIcon,
-} from "@nithin-studio-app/ui-components";
+  WarningIcon,
+} from "./components";
 import { ContextMenu } from "./file-manager/ContextMenu";
 import { FileGrid } from "./file-manager/FileGrid";
 import { FileManagerDialogs } from "./file-manager/FileManagerDialogs";
@@ -272,7 +274,7 @@ export function FileManager({
           )}
           {upload.uploadProgress && (
             <div className="file-manager-upload-progress">
-              <Text variant="body2" color="#9aa0a6">
+              <Text variant="body2" color="var(--fm-text-muted)">
                 Uploading…
               </Text>
               <ProgressBar
@@ -288,37 +290,52 @@ export function FileManager({
               <ProgressBar variant="indeterminate" aria-label="Loading files" />
             </div>
           ) : itemsData.error ? (
+            // Same hero shape as the empty state below (glow-badge icon +
+            // headline + subtitle) rather than a boxed Alert — this is the
+            // state a fresh checkout actually lands on before its backend
+            // is running, so it's worth the same amount of polish. "Can't
+            // reach the server" is the common case during local dev — not
+            // really an application error, so it gets the calmer amber
+            // "warning" badge rather than the danger-red used for an
+            // actual bad response from a server that IS running.
             <div className="file-manager-error-state">
-              <Alert
-                severity="error"
-                title={
-                  navigation.isTrash
-                    ? "Couldn't load trash"
-                    : navigation.isRecent
-                      ? "Couldn't load recently added items"
-                      : navigation.isStarred
-                        ? "Couldn't load starred items"
-                        : "Couldn't load this folder"
-                }
+              <span
+                className={`file-manager-empty-icon ${itemsData.error.unreachable ? "file-manager-empty-icon-warning" : "file-manager-empty-icon-danger"}`}
               >
-                {itemsData.error}
-              </Alert>
-              <Button variant="outlined" size="small" onClick={itemsData.refreshItems}>
-                Retry
-              </Button>
+                {itemsData.error.unreachable ? <WarningIcon /> : <ErrorIcon />}
+              </span>
+              <Text variant="h5">{itemsData.error.title}</Text>
+              <Text variant="body2" color="var(--fm-text-muted)">
+                {itemsData.error.message}
+              </Text>
+              <div className="file-manager-error-retry">
+                <Button variant="outlined" size="small" color="var(--fm-accent-hover)" onClick={itemsData.refreshItems}>
+                  Retry
+                </Button>
+              </div>
             </div>
           ) : filteredItems.length === 0 ? (
             <div className="file-manager-empty-state">
-              {navigation.isTrash ? (
-                <TrashIcon />
-              ) : navigation.isRecent ? (
-                <CalendarIcon />
-              ) : navigation.isStarred ? (
-                <StarIcon />
-              ) : (
-                <FolderIcon />
-              )}
-              <Text variant="h6">
+              <span
+                className={
+                  navigation.isStarred
+                    ? "file-manager-empty-icon file-manager-empty-icon-star"
+                    : navigation.isTrash || navigation.isRecent
+                      ? "file-manager-empty-icon file-manager-empty-icon-muted"
+                      : "file-manager-empty-icon"
+                }
+              >
+                {navigation.isTrash ? (
+                  <TrashIcon />
+                ) : navigation.isRecent ? (
+                  <CalendarIcon />
+                ) : navigation.isStarred ? (
+                  <StarIcon />
+                ) : (
+                  <FolderIcon />
+                )}
+              </span>
+              <Text variant="h5">
                 {navigation.isTrash
                   ? "Trash is empty"
                   : navigation.isRecent
@@ -327,7 +344,7 @@ export function FileManager({
                       ? "No starred items"
                       : "This folder is empty"}
               </Text>
-              <Text variant="body2" color="#9aa0a6">
+              <Text variant="body2" color="var(--fm-text-muted)">
                 {navigation.isTrash
                   ? "Items you delete are moved here until you delete them forever."
                   : navigation.isRecent
@@ -416,7 +433,11 @@ export function FileManager({
         />
       )}
 
-      <Snackbar open={toast !== null} onClose={closeToast} autoHideDuration={4000}>
+      {/* top-right is the default position — Snackbar portals to
+          document.body, and components/Snackbar/Snackbar.css offsets
+          .snackbar-top-right below the header's own height so it lands
+          inside the body instead of overlapping it. */}
+      <Snackbar open={toast !== null} onClose={closeToast} autoHideDuration={4000} position="top-right">
         {toast && (
           <Alert severity={toast.severity} onClose={closeToast}>
             {toast.text}

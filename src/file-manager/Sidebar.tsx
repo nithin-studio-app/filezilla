@@ -1,4 +1,4 @@
-import { ArrowBackIcon, CalendarIcon, HomeIcon, List, ListItem, StarIcon, Text, TrashIcon } from "@nithin-studio-app/ui-components";
+import { ArrowBackIcon, CalendarIcon, HomeIcon, List, ListItem, StarIcon, Text, TrashIcon } from "../components";
 import type { NavSection, NavSectionConfig } from "./types";
 
 const NAV_SECTIONS: NavSectionConfig[] = [

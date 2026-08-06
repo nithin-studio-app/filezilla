@@ -1,0 +1,107 @@
+.progress-bar-ring {
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.2s ease;
+}
+
+.progress-bar-ring-inner {
+  border-radius: 50%;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.progress-bar-ring-pct {
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 1rem;
+  color: #1a1d21;
+}
+
+.progress-bar-linear-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.progress-bar-linear-track {
+  flex: 1;
+  border-radius: 999px;
+  background: #e1e4e8;
+  overflow: hidden;
+}
+
+.progress-bar-linear-fill {
+  height: 100%;
+  border-radius: inherit;
+  transition:
+    width 0.2s ease,
+    background 0.2s ease;
+}
+
+.progress-bar-linear-label {
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 0.85rem;
+  color: #1a1d21;
+  min-width: 2.75rem;
+  text-align: right;
+}
+
+.progress-bar-segmented {
+  display: flex;
+  width: 100%;
+}
+
+.progress-bar-segment {
+  flex: 1;
+  border-radius: 999px;
+  transition: background 0.2s ease;
+}
+
+.progress-bar-stacked {
+  display: flex;
+}
+
+.progress-bar-indeterminate-fill {
+  height: 100%;
+  width: 40%;
+  border-radius: inherit;
+  animation: progress-bar-indeterminate-slide 1.2s ease-in-out infinite;
+}
+
+@keyframes progress-bar-indeterminate-slide {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(350%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .progress-bar-indeterminate-fill {
+    animation: none;
+    width: 100%;
+  }
+}
+
+.progress-bar-gauge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.progress-bar-gauge-svg path:last-child {
+  transition: stroke-dashoffset 0.2s ease, stroke 0.2s ease;
+}
+
+.progress-bar-gauge-pct {
+  margin-top: -0.5rem;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 1.1rem;
+  color: #1a1d21;
+}
